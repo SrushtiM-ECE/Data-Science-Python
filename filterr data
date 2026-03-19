@@ -1,0 +1,12 @@
+import pandas as pd
+
+data = {
+    "Name": ["Asha", "Ravi", "Kiran"],
+    "Marks": [85, 90, 78]
+}
+
+df = pd.DataFrame(data)
+
+high_scorers = df[df["Marks"] > 80]
+
+print(high_scorers)
