@@ -1,0 +1,8 @@
+import pandas as pd
+data={
+    "Name":["A","B",None,"A"],
+    "Marks":[20,None,58,45]
+}
+df=pd.DataFrame(data)
+result = df.groupby("Name")["Marks"].max()
+print(result)
