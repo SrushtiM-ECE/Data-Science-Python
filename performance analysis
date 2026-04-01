@@ -1,0 +1,60 @@
+import pandas as pd
+
+# Step 1: Create dataset
+data = {
+    'Name': ['Asha', 'Ravi', 'Kiran', 'Meena', 'Arjun', 'Divya'],
+    'Math': [85, 60, 90, 70, 88, 45],
+    'Science': [78, 55, 92, 65, 80, 50],
+    'English': [82, 58, 88, 72, 84, 60]
+}
+
+df = pd.DataFrame(data)
+
+# Step 2: Display data
+print("Original Data:\n")
+print(df)
+
+# Step 3: Calculate Total Marks
+df['Total'] = df['Math'] + df['Science'] + df['English']
+
+# Step 4: Calculate Average Marks
+df['Average'] = df['Total'] / 3
+
+# Step 5: Find Top Performer
+top_student = df[df['Total'] == df['Total'].max()]
+print("\nTop Performer:\n")
+print(top_student)
+
+# Step 6: Find Weak Students (Average < 60)
+weak_students = df[df['Average'] < 60]
+print("\nWeak Students (Average < 60):\n")
+print(weak_students)
+
+# Step 7: Assign Grades
+def grade(avg):
+    if avg >= 85:
+        return 'A'
+    elif avg >= 70:
+        return 'B'
+    elif avg >= 60:
+        return 'C'
+    else:
+        return 'D'
+
+df['Grade'] = df['Average'].apply(grade)
+
+# Step 8: Sort by Total Marks
+sorted_df = df.sort_values(by='Total', ascending=False)
+
+print("\nFinal Sorted Data:\n")
+print(sorted_df)
+
+# Step 9: Subject-wise Average
+subject_avg = df[['Math', 'Science', 'English']].mean()
+print("\nSubject-wise Average:\n")
+print(subject_avg)
+
+# Step 10: Save result
+df.to_csv("student_performance.csv", index=False)
+
+print("\nFile saved as student_performance.csv")
