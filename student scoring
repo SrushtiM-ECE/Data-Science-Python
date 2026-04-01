@@ -1,0 +1,25 @@
+import pandas as pd
+
+# Step 1: Create dataset
+data = {
+    'Name': ['Asha', 'Ravi', 'Kiran', 'Meena', 'Arjun', 'Divya'],
+    'Math': [85, 60, 90, 70, 88, 45],
+    'Science': [78, 55, 92, 65, 80, 50],
+    'English': [82, 58, 88, 72, 84, 60]
+}
+
+df = pd.DataFrame(data)
+
+# Step 2: Display original data
+print("Original Data:\n")
+print(df)
+
+# Step 3: Filter students with marks > 80 in ALL subjects
+top_students = df[
+    (df['Math'] > 80) &
+    (df['Science'] > 80) &
+    (df['English'] > 80)
+]
+
+print("\nStudents scoring more than 80 in ALL subjects:\n")
+print(top_students)
