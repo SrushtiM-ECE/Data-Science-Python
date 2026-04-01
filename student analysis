@@ -1,0 +1,53 @@
+import pandas as pd
+
+# Step 1: Create dataset
+data = {
+    'Name': ['Asha', 'Ravi', 'Kiran', 'Meena', 'Arjun'],
+    'Subject': ['Math', 'Science', 'Math', 'English', 'Science'],
+    'Marks': [85, 65, 90, 70, 88]
+}
+
+df = pd.DataFrame(data)
+
+# Step 2: Display dataset
+print("Original Data:\n")
+print(df)
+
+# Step 3: Filter students with marks > 80
+print("\nStudents with Marks > 80:\n")
+high_marks = df[df['Marks'] > 80]
+print(high_marks)
+
+# Step 4: Calculate average marks
+print("\nAverage Marks:\n")
+average = df['Marks'].mean()
+print(average)
+
+# Step 5: Sort students by marks (descending)
+print("\nSorted Data (Highest Marks First):\n")
+sorted_df = df.sort_values(by='Marks', ascending=False)
+print(sorted_df)
+
+# Step 6: Group by Subject and find average marks
+print("\nAverage Marks by Subject:\n")
+grouped = df.groupby('Subject')['Marks'].mean()
+print(grouped)
+
+# Step 7: Add Grade column
+def grade(marks):
+    if marks >= 85:
+        return 'A'
+    elif marks >= 70:
+        return 'B'
+    else:
+        return 'C'
+
+df['Grade'] = df['Marks'].apply(grade)
+
+print("\nData with Grades:\n")
+print(df)
+
+# Step 8: Save to CSV file
+df.to_csv("student_analysis.csv", index=False)
+
+print("\nFile saved successfully as 'student_analysis.csv'")
