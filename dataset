@@ -1,0 +1,56 @@
+import pandas as pd
+
+# Step 1: Create dataset
+data = {
+    'Name': ['Asha', 'Ravi', 'Kiran', 'Meena', 'Arjun', 'Divya'],
+    'Marks': [85, 60, 90, 70, 88, 45],
+    'Attendance': [90, 65, 95, 70, 85, 60]
+}
+
+df = pd.DataFrame(data)
+
+# Step 2: Display original data
+print("Original Data:\n")
+print(df)
+
+# Step 3: Find students with low attendance (<75)
+low_attendance = df[df['Attendance'] < 75]
+
+print("\nStudents with Low Attendance (<75):\n")
+print(low_attendance)
+
+# Step 4: Find students eligible (Marks > 70 AND Attendance > 75)
+eligible_students = df[
+    (df['Marks'] > 70) &
+    (df['Attendance'] > 75)
+]
+
+print("\nEligible Students:\n")
+print(eligible_students)
+
+# Step 5: Add Performance column
+def performance(marks):
+    if marks >= 85:
+        return "Excellent"
+    elif marks >= 70:
+        return "Good"
+    elif marks >= 50:
+        return "Average"
+    else:
+        return "Poor"
+
+df['Performance'] = df['Marks'].apply(performance)
+
+print("\nData with Performance:\n")
+print(df)
+
+# Step 6: Sort by Attendance
+sorted_df = df.sort_values(by='Attendance', ascending=False)
+
+print("\nSorted by Attendance:\n")
+print(sorted_df)
+
+# Step 7: Save file
+df.to_csv("attendance_analysis.csv", index=False)
+
+print("\nFile saved as attendance_analysis.csv")
