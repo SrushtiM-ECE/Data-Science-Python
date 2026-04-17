@@ -1,0 +1,33 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Step 1: Create sample data (you can later replace with CSV file)
+data = {
+    'Name': ['Asha', 'Rahul', 'Priya', 'Kiran', 'Sneha'],
+    'Maths': [85, 70, 90, 60, 75],
+    'Science': [80, 65, 88, 55, 78],
+    'English': [78, 60, 85, 58, 72]
+}
+
+df = pd.DataFrame(data)
+
+# Step 2: Calculate Average Marks
+df['Average'] = (df['Maths'] + df['Science'] + df['English']) / 3
+
+# Step 3: Find Top Performer
+top_student = df.loc[df['Average'].idxmax()]
+
+# Step 4: Find Weak Students (Average < 70)
+weak_students = df[df['Average'] < 70]
+
+# Step 5: Print Results
+print("Full Data:\n", df)
+print("\nTop Performer:\n", top_student)
+print("\nWeak Students:\n", weak_students)
+
+# Step 6: Visualization (Bar Chart)
+plt.bar(df['Name'], df['Average'])
+plt.xlabel('Students')
+plt.ylabel('Average Marks')
+plt.title('Student Performance Analysis')
+plt.show()
