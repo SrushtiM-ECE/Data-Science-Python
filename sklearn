@@ -1,0 +1,18 @@
+from sklearn.linear_model import LogisticRegression
+
+# Step 1: Input data (hours studied)
+X = [[1], [2], [3], [4], [5]]
+
+# Step 2: Output (0 = Fail, 1 = Pass)
+y = [0, 0, 0, 1, 1]
+
+# Step 3: Create model
+model = LogisticRegression()
+
+# Step 4: Train model
+model.fit(X, y)
+
+# Step 5: Predict
+prediction = model.predict([[3.5]])
+
+print("Prediction (0=Fail, 1=Pass):", prediction)
