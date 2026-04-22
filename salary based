@@ -1,0 +1,21 @@
+import pandas as pd
+
+# Step 1: Create dataset (Employee Salary Data)
+data = {
+    "Name": ["Ravi", "Anita", "John", "Priya", "Karan"],
+    "Department": ["IT", "HR", "IT", "Finance", "HR"],
+    "Salary": [60000, 45000, 75000, 50000, 40000]
+}
+
+df = pd.DataFrame(data)
+
+# Step 2: Filter employees with salary > 50000
+high_salary = df[df["Salary"] > 50000]
+
+# Step 3: Filter IT department employees
+it_employees = df[df["Department"] == "IT"]
+
+# Step 4: Display results
+print("All Employees:\n", df)
+print("\nEmployees with Salary > 50000:\n", high_salary)
+print("\nIT Department Employees:\n", it_employees)
