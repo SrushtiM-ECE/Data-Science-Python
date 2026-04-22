@@ -1,0 +1,24 @@
+import pandas as pd
+import numpy as np
+
+# Step 1: Create dataset with missing values
+data = {
+    "Name": ["Ravi", "Anita", "John", "Priya", "Karan"],
+    "Age": [25, np.nan, 30, 28, np.nan],
+    "Salary": [50000, 60000, np.nan, 55000, 45000]
+}
+
+df = pd.DataFrame(data)
+
+# Step 2: Check missing values
+print("Missing Values:\n", df.isnull())
+
+# Step 3: Count missing values
+print("\nTotal Missing Values:\n", df.isnull().sum())
+
+# Step 4: Fill missing values
+df["Age"].fillna(df["Age"].mean(), inplace=True)
+df["Salary"].fillna(0, inplace=True)
+
+# Step 5: Display cleaned data
+print("\nCleaned Data:\n", df)
