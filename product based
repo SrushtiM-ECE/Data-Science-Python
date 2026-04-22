@@ -1,0 +1,20 @@
+import pandas as pd
+
+# Step 1: Create dataset (Sales Data)
+data = {
+    "Product": ["Laptop", "Mobile", "Laptop", "Tablet", "Mobile", "Tablet"],
+    "Region": ["North", "South", "East", "West", "North", "South"],
+    "Sales": [50000, 30000, 40000, 20000, 35000, 25000]
+}
+
+df = pd.DataFrame(data)
+
+# Step 2: Group by Product and find total sales
+product_sales = df.groupby("Product")["Sales"].sum()
+
+# Step 3: Group by Region and find average sales
+region_avg = df.groupby("Region")["Sales"].mean()
+
+# Step 4: Display results
+print("Total Sales by Product:\n", product_sales)
+print("\nAverage Sales by Region:\n", region_avg)
