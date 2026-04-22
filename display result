@@ -1,0 +1,15 @@
+import pandas as pd
+
+# Step 1: Create dataset
+data = {
+    "Hours_Studied": [1, 2, 3, 4, 5],
+    "Marks": [35, 40, 50, 65, 80]
+}
+
+df = pd.DataFrame(data)
+
+# Step 2: Find correlation
+correlation = df.corr()
+
+# Step 3: Display result
+print("Correlation Matrix:\n", correlation)
