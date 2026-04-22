@@ -1,0 +1,19 @@
+import pandas as pd
+
+# Step 1: Create first dataset (Students)
+students = pd.DataFrame({
+    "Student_ID": [1, 2, 3, 4],
+    "Name": ["Ravi", "Anita", "John", "Priya"]
+})
+
+# Step 2: Create second dataset (Marks)
+marks = pd.DataFrame({
+    "Student_ID": [1, 2, 3, 5],
+    "Marks": [85, 90, 78, 88]
+})
+
+# Step 3: Merge datasets
+merged_data = pd.merge(students, marks, on="Student_ID", how="inner")
+
+# Step 4: Display result
+print("Merged Data:\n", merged_data)
