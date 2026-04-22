@@ -1,0 +1,21 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Step 1: Create dataset (Product sales)
+data = {
+    "Product": ["Laptop", "Mobile", "Tablet", "Headphones", "Smartwatch"],
+    "Sales": [150, 300, 120, 200, 180]
+}
+
+df = pd.DataFrame(data)
+
+# Step 2: Create bar chart
+plt.bar(df["Product"], df["Sales"])
+
+# Step 3: Labels and title
+plt.xlabel("Products")
+plt.ylabel("Sales")
+plt.title("Product Sales Analysis")
+
+# Step 4: Show graph
+plt.show()
