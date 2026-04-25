@@ -1,0 +1,170 @@
+----------------------------------------------------
+-- CREATE MEMBERS TABLE
+----------------------------------------------------
+
+CREATE TABLE members (
+    member_id NUMBER PRIMARY KEY,
+    member_name VARCHAR2(50),
+    city VARCHAR2(30),
+    phone VARCHAR2(15)
+);
+
+----------------------------------------------------
+-- CREATE BOOKS TABLE
+----------------------------------------------------
+
+CREATE TABLE books (
+    book_id NUMBER PRIMARY KEY,
+    book_title VARCHAR2(100),
+    author_name VARCHAR2(50),
+    price NUMBER
+);
+
+----------------------------------------------------
+-- CREATE ISSUES TABLE
+----------------------------------------------------
+
+CREATE TABLE issues (
+    issue_id NUMBER PRIMARY KEY,
+    member_id NUMBER,
+    book_id NUMBER,
+    issue_date DATE,
+    return_date DATE,
+
+    CONSTRAINT fk_member
+        FOREIGN KEY (member_id)
+        REFERENCES members(member_id),
+
+    CONSTRAINT fk_book
+        FOREIGN KEY (book_id)
+        REFERENCES books(book_id)
+);
+
+----------------------------------------------------
+-- INSERT DATA INTO MEMBERS
+----------------------------------------------------
+
+INSERT INTO members VALUES (1, 'Asha', 'Bangalore', '9876543210');
+INSERT INTO members VALUES (2, 'Ravi', 'Mysore', '9876543222');
+INSERT INTO members VALUES (3, 'Meena', 'Hubli', '9876543333');
+INSERT INTO members VALUES (4, 'Kiran', 'Davangere', '9876544444');
+
+----------------------------------------------------
+-- INSERT DATA INTO BOOKS
+----------------------------------------------------
+
+INSERT INTO books VALUES (101, 'Python Basics', 'John Smith', 450);
+INSERT INTO books VALUES (102, 'SQL Mastery', 'David Lee', 550);
+INSERT INTO books VALUES (103, 'Machine Learning', 'Andrew Clark', 700);
+INSERT INTO books VALUES (104, 'Data Science Guide', 'Emma Watson', 800);
+
+----------------------------------------------------
+-- INSERT DATA INTO ISSUES
+----------------------------------------------------
+
+INSERT INTO issues VALUES (1001, 1, 101, SYSDATE, SYSDATE + 7);
+INSERT INTO issues VALUES (1002, 2, 102, SYSDATE, SYSDATE + 10);
+INSERT INTO issues VALUES (1003, 3, 103, SYSDATE, SYSDATE + 5);
+INSERT INTO issues VALUES (1004, 4, 104, SYSDATE, SYSDATE + 8);
+
+----------------------------------------------------
+-- DISPLAY ALL MEMBERS
+----------------------------------------------------
+
+SELECT * FROM members;
+
+----------------------------------------------------
+-- DISPLAY ALL BOOKS
+----------------------------------------------------
+
+SELECT * FROM books;
+
+----------------------------------------------------
+-- DISPLAY ALL ISSUES
+----------------------------------------------------
+
+SELECT * FROM issues;
+
+----------------------------------------------------
+-- SHOW MEMBER NAME AND BOOK TITLE
+----------------------------------------------------
+
+SELECT
+    m.member_name,
+    b.book_title,
+    i.issue_date,
+    i.return_date
+FROM members m
+JOIN issues i
+ON m.member_id = i.member_id
+JOIN books b
+ON i.book_id = b.book_id;
+
+----------------------------------------------------
+-- FIND MOST EXPENSIVE BOOK
+----------------------------------------------------
+
+SELECT *
+FROM books
+WHERE price = (
+    SELECT MAX(price)
+    FROM books
+);
+
+----------------------------------------------------
+-- COUNT TOTAL BOOKS
+----------------------------------------------------
+
+SELECT COUNT(*) AS total_books
+FROM books;
+
+----------------------------------------------------
+-- FIND MEMBERS FROM BANGALORE
+----------------------------------------------------
+
+SELECT *
+FROM members
+WHERE city = 'Bangalore';
+
+----------------------------------------------------
+-- UPDATE BOOK PRICE
+----------------------------------------------------
+
+UPDATE books
+SET price = 900
+WHERE book_id = 104;
+
+----------------------------------------------------
+-- DELETE ISSUE RECORD
+----------------------------------------------------
+
+DELETE FROM issues
+WHERE issue_id = 1004;
+
+----------------------------------------------------
+-- CREATE VIEW
+----------------------------------------------------
+
+CREATE VIEW library_report AS
+SELECT
+    m.member_name,
+    b.book_title,
+    i.issue_date,
+    i.return_date
+FROM members m
+JOIN issues i
+ON m.member_id = i.member_id
+JOIN books b
+ON i.book_id = b.book_id;
+
+----------------------------------------------------
+-- DISPLAY VIEW
+----------------------------------------------------
+
+SELECT * FROM library_report;
+
+----------------------------------------------------
+-- COMMIT CHANGES
+----------------------------------------------------
+
+COMMIT;
