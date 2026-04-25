@@ -1,0 +1,176 @@
+-- CREATE STUDENTS TABLE
+CREATE TABLE students (
+    student_id NUMBER PRIMARY KEY,
+    student_name VARCHAR2(50),
+    department VARCHAR2(30),
+    age NUMBER
+);
+
+-- CREATE SUBJECTS TABLE
+CREATE TABLE subjects (
+    subject_id NUMBER PRIMARY KEY,
+    subject_name VARCHAR2(50)
+);
+
+-- CREATE MARKS TABLE
+CREATE TABLE marks (
+    mark_id NUMBER PRIMARY KEY,
+    student_id NUMBER,
+    subject_id NUMBER,
+    marks NUMBER,
+    semester NUMBER,
+    
+    CONSTRAINT fk_student
+        FOREIGN KEY (student_id)
+        REFERENCES students(student_id),
+        
+    CONSTRAINT fk_subject
+        FOREIGN KEY (subject_id)
+        REFERENCES subjects(subject_id)
+);
+
+----------------------------------------------------
+-- INSERT DATA INTO STUDENTS TABLE
+----------------------------------------------------
+
+INSERT INTO students VALUES (101, 'Asha', 'ECE', 20);
+INSERT INTO students VALUES (102, 'Ravi', 'CSE', 21);
+INSERT INTO students VALUES (103, 'Meena', 'ECE', 19);
+INSERT INTO students VALUES (104, 'Kiran', 'MECH', 22);
+
+----------------------------------------------------
+-- INSERT DATA INTO SUBJECTS TABLE
+----------------------------------------------------
+
+INSERT INTO subjects VALUES (1, 'Mathematics');
+INSERT INTO subjects VALUES (2, 'Python');
+INSERT INTO subjects VALUES (3, 'Database Systems');
+INSERT INTO subjects VALUES (4, 'Machine Learning');
+
+----------------------------------------------------
+-- INSERT DATA INTO MARKS TABLE
+----------------------------------------------------
+
+INSERT INTO marks VALUES (1, 101, 1, 85, 1);
+INSERT INTO marks VALUES (2, 101, 2, 90, 1);
+INSERT INTO marks VALUES (3, 102, 1, 70, 1);
+INSERT INTO marks VALUES (4, 102, 3, 88, 1);
+INSERT INTO marks VALUES (5, 103, 2, 95, 1);
+INSERT INTO marks VALUES (6, 103, 4, 91, 1);
+INSERT INTO marks VALUES (7, 104, 1, 60, 1);
+INSERT INTO marks VALUES (8, 104, 3, 72, 1);
+
+----------------------------------------------------
+-- DISPLAY ALL STUDENTS
+----------------------------------------------------
+
+SELECT * FROM students;
+
+----------------------------------------------------
+-- DISPLAY ALL SUBJECTS
+----------------------------------------------------
+
+SELECT * FROM subjects;
+
+----------------------------------------------------
+-- DISPLAY ALL MARKS
+----------------------------------------------------
+
+SELECT * FROM marks;
+
+----------------------------------------------------
+-- JOIN QUERY
+-- SHOW STUDENT NAME, SUBJECT, AND MARKS
+----------------------------------------------------
+
+SELECT 
+    s.student_name,
+    sub.subject_name,
+    m.marks
+FROM students s
+JOIN marks m
+ON s.student_id = m.student_id
+JOIN subjects sub
+ON m.subject_id = sub.subject_id;
+
+----------------------------------------------------
+-- FIND AVERAGE MARKS OF EACH STUDENT
+----------------------------------------------------
+
+SELECT 
+    s.student_name,
+    AVG(m.marks) AS average_marks
+FROM students s
+JOIN marks m
+ON s.student_id = m.student_id
+GROUP BY s.student_name;
+
+----------------------------------------------------
+-- FIND TOPPER
+----------------------------------------------------
+
+SELECT 
+    s.student_name,
+    AVG(m.marks) AS average_marks
+FROM students s
+JOIN marks m
+ON s.student_id = m.student_id
+GROUP BY s.student_name
+ORDER BY average_marks DESC;
+
+----------------------------------------------------
+-- FIND STUDENTS WITH MARKS LESS THAN 75
+----------------------------------------------------
+
+SELECT 
+    s.student_name,
+    sub.subject_name,
+    m.marks
+FROM students s
+JOIN marks m
+ON s.student_id = m.student_id
+JOIN subjects sub
+ON m.subject_id = sub.subject_id
+WHERE m.marks < 75;
+
+----------------------------------------------------
+-- UPDATE MARKS
+----------------------------------------------------
+
+UPDATE marks
+SET marks = 80
+WHERE mark_id = 7;
+
+----------------------------------------------------
+-- DELETE A RECORD
+----------------------------------------------------
+
+DELETE FROM marks
+WHERE mark_id = 8;
+
+----------------------------------------------------
+-- CREATE A VIEW
+----------------------------------------------------
+
+CREATE VIEW student_report AS
+SELECT 
+    s.student_name,
+    sub.subject_name,
+    m.marks
+FROM students s
+JOIN marks m
+ON s.student_id = m.student_id
+JOIN subjects sub
+ON m.subject_id = sub.subject_id;
+
+----------------------------------------------------
+-- DISPLAY VIEW
+----------------------------------------------------
+
+SELECT * FROM student_report;
+
+----------------------------------------------------
+-- COMMIT CHANGES
+----------------------------------------------------
+
+COMMIT;
