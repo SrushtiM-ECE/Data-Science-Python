@@ -1,0 +1,177 @@
+----------------------------------------------------
+-- CREATE CUSTOMERS TABLE
+----------------------------------------------------
+
+CREATE TABLE customers (
+    customer_id NUMBER PRIMARY KEY,
+    customer_name VARCHAR2(50),
+    city VARCHAR2(30),
+    phone VARCHAR2(15)
+);
+
+----------------------------------------------------
+-- CREATE PRODUCTS TABLE
+----------------------------------------------------
+
+CREATE TABLE products (
+    product_id NUMBER PRIMARY KEY,
+    product_name VARCHAR2(50),
+    category VARCHAR2(30),
+    price NUMBER
+);
+
+----------------------------------------------------
+-- CREATE ORDERS TABLE
+----------------------------------------------------
+
+CREATE TABLE orders (
+    order_id NUMBER PRIMARY KEY,
+    customer_id NUMBER,
+    product_id NUMBER,
+    quantity NUMBER,
+    order_date DATE,
+
+    CONSTRAINT fk_customer
+        FOREIGN KEY (customer_id)
+        REFERENCES customers(customer_id),
+
+    CONSTRAINT fk_product
+        FOREIGN KEY (product_id)
+        REFERENCES products(product_id)
+);
+
+----------------------------------------------------
+-- INSERT DATA INTO CUSTOMERS
+----------------------------------------------------
+
+INSERT INTO customers VALUES (1, 'Asha', 'Bangalore', '9876543210');
+INSERT INTO customers VALUES (2, 'Ravi', 'Mysore', '9876543222');
+INSERT INTO customers VALUES (3, 'Meena', 'Hubli', '9876543333');
+INSERT INTO customers VALUES (4, 'Kiran', 'Davangere', '9876544444');
+
+----------------------------------------------------
+-- INSERT DATA INTO PRODUCTS
+----------------------------------------------------
+
+INSERT INTO products VALUES (101, 'Laptop', 'Electronics', 55000);
+INSERT INTO products VALUES (102, 'Headphones', 'Electronics', 2000);
+INSERT INTO products VALUES (103, 'Shoes', 'Fashion', 3000);
+INSERT INTO products VALUES (104, 'Smartphone', 'Electronics', 25000);
+
+----------------------------------------------------
+-- INSERT DATA INTO ORDERS
+----------------------------------------------------
+
+INSERT INTO orders VALUES (1001, 1, 101, 1, SYSDATE);
+INSERT INTO orders VALUES (1002, 2, 102, 2, SYSDATE);
+INSERT INTO orders VALUES (1003, 3, 103, 1, SYSDATE);
+INSERT INTO orders VALUES (1004, 4, 104, 1, SYSDATE);
+
+----------------------------------------------------
+-- DISPLAY ALL CUSTOMERS
+----------------------------------------------------
+
+SELECT * FROM customers;
+
+----------------------------------------------------
+-- DISPLAY ALL PRODUCTS
+----------------------------------------------------
+
+SELECT * FROM products;
+
+----------------------------------------------------
+-- DISPLAY ALL ORDERS
+----------------------------------------------------
+
+SELECT * FROM orders;
+
+----------------------------------------------------
+-- SHOW CUSTOMER NAME, PRODUCT NAME, QUANTITY
+----------------------------------------------------
+
+SELECT
+    c.customer_name,
+    p.product_name,
+    o.quantity
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+JOIN products p
+ON o.product_id = p.product_id;
+
+----------------------------------------------------
+-- TOTAL PRICE OF EACH ORDER
+----------------------------------------------------
+
+SELECT
+    c.customer_name,
+    p.product_name,
+    o.quantity,
+    (p.price * o.quantity) AS total_price
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+JOIN products p
+ON o.product_id = p.product_id;
+
+----------------------------------------------------
+-- FIND MOST EXPENSIVE PRODUCT
+----------------------------------------------------
+
+SELECT *
+FROM products
+WHERE price = (
+    SELECT MAX(price)
+    FROM products
+);
+
+----------------------------------------------------
+-- FIND CUSTOMERS FROM BANGALORE
+----------------------------------------------------
+
+SELECT *
+FROM customers
+WHERE city = 'Bangalore';
+
+----------------------------------------------------
+-- UPDATE PRODUCT PRICE
+----------------------------------------------------
+
+UPDATE products
+SET price = 2200
+WHERE product_id = 102;
+
+----------------------------------------------------
+-- DELETE AN ORDER
+----------------------------------------------------
+
+DELETE FROM orders
+WHERE order_id = 1004;
+
+----------------------------------------------------
+-- CREATE VIEW
+----------------------------------------------------
+
+CREATE VIEW order_report AS
+SELECT
+    c.customer_name,
+    p.product_name,
+    o.quantity,
+    (p.price * o.quantity) AS total_price
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+JOIN products p
+ON o.product_id = p.product_id;
+
+----------------------------------------------------
+-- DISPLAY VIEW
+----------------------------------------------------
+
+SELECT * FROM order_report;
+
+----------------------------------------------------
+-- COMMIT
+----------------------------------------------------
+
+COMMIT;
