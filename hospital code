@@ -1,0 +1,170 @@
+----------------------------------------------------
+-- CREATE PATIENTS TABLE
+----------------------------------------------------
+
+CREATE TABLE patients (
+    patient_id NUMBER PRIMARY KEY,
+    patient_name VARCHAR2(50),
+    age NUMBER,
+    gender VARCHAR2(10),
+    city VARCHAR2(30)
+);
+
+----------------------------------------------------
+-- CREATE DOCTORS TABLE
+----------------------------------------------------
+
+CREATE TABLE doctors (
+    doctor_id NUMBER PRIMARY KEY,
+    doctor_name VARCHAR2(50),
+    specialization VARCHAR2(50),
+    salary NUMBER
+);
+
+----------------------------------------------------
+-- CREATE APPOINTMENTS TABLE
+----------------------------------------------------
+
+CREATE TABLE appointments (
+    appointment_id NUMBER PRIMARY KEY,
+    patient_id NUMBER,
+    doctor_id NUMBER,
+    appointment_date DATE,
+    fees NUMBER,
+
+    CONSTRAINT fk_patient
+        FOREIGN KEY (patient_id)
+        REFERENCES patients(patient_id),
+
+    CONSTRAINT fk_doctor
+        FOREIGN KEY (doctor_id)
+        REFERENCES doctors(doctor_id)
+);
+
+----------------------------------------------------
+-- INSERT DATA INTO PATIENTS
+----------------------------------------------------
+
+INSERT INTO patients VALUES (1, 'Asha', 21, 'Female', 'Bangalore');
+INSERT INTO patients VALUES (2, 'Ravi', 25, 'Male', 'Mysore');
+INSERT INTO patients VALUES (3, 'Meena', 19, 'Female', 'Hubli');
+INSERT INTO patients VALUES (4, 'Kiran', 30, 'Male', 'Davangere');
+
+----------------------------------------------------
+-- INSERT DATA INTO DOCTORS
+----------------------------------------------------
+
+INSERT INTO doctors VALUES (101, 'Dr. Sharma', 'Cardiology', 120000);
+INSERT INTO doctors VALUES (102, 'Dr. Priya', 'Neurology', 150000);
+INSERT INTO doctors VALUES (103, 'Dr. Kumar', 'Orthopedics', 100000);
+
+----------------------------------------------------
+-- INSERT DATA INTO APPOINTMENTS
+----------------------------------------------------
+
+INSERT INTO appointments VALUES (1001, 1, 101, SYSDATE, 500);
+INSERT INTO appointments VALUES (1002, 2, 102, SYSDATE, 700);
+INSERT INTO appointments VALUES (1003, 3, 103, SYSDATE, 400);
+INSERT INTO appointments VALUES (1004, 4, 101, SYSDATE, 500);
+
+----------------------------------------------------
+-- DISPLAY ALL PATIENTS
+----------------------------------------------------
+
+SELECT * FROM patients;
+
+----------------------------------------------------
+-- DISPLAY ALL DOCTORS
+----------------------------------------------------
+
+SELECT * FROM doctors;
+
+----------------------------------------------------
+-- DISPLAY ALL APPOINTMENTS
+----------------------------------------------------
+
+SELECT * FROM appointments;
+
+----------------------------------------------------
+-- SHOW PATIENT NAME, DOCTOR NAME, SPECIALIZATION
+----------------------------------------------------
+
+SELECT
+    p.patient_name,
+    d.doctor_name,
+    d.specialization
+FROM patients p
+JOIN appointments a
+ON p.patient_id = a.patient_id
+JOIN doctors d
+ON a.doctor_id = d.doctor_id;
+
+----------------------------------------------------
+-- FIND TOTAL FEES COLLECTED
+----------------------------------------------------
+
+SELECT
+    SUM(fees) AS total_fees
+FROM appointments;
+
+----------------------------------------------------
+-- FIND HIGHEST PAID DOCTOR
+----------------------------------------------------
+
+SELECT *
+FROM doctors
+WHERE salary = (
+    SELECT MAX(salary)
+    FROM doctors
+);
+
+----------------------------------------------------
+-- FIND PATIENTS FROM BANGALORE
+----------------------------------------------------
+
+SELECT *
+FROM patients
+WHERE city = 'Bangalore';
+
+----------------------------------------------------
+-- UPDATE DOCTOR SALARY
+----------------------------------------------------
+
+UPDATE doctors
+SET salary = 160000
+WHERE doctor_id = 102;
+
+----------------------------------------------------
+-- DELETE AN APPOINTMENT
+----------------------------------------------------
+
+DELETE FROM appointments
+WHERE appointment_id = 1003;
+
+----------------------------------------------------
+-- CREATE VIEW
+----------------------------------------------------
+
+CREATE VIEW hospital_report AS
+SELECT
+    p.patient_name,
+    d.doctor_name,
+    d.specialization,
+    a.fees
+FROM patients p
+JOIN appointments a
+ON p.patient_id = a.patient_id
+JOIN doctors d
+ON a.doctor_id = d.doctor_id;
+
+----------------------------------------------------
+-- DISPLAY VIEW
+----------------------------------------------------
+
+SELECT * FROM hospital_report;
+
+----------------------------------------------------
+-- COMMIT CHANGES
+----------------------------------------------------
+
+COMMIT;
