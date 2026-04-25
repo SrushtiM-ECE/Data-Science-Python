@@ -1,0 +1,179 @@
+----------------------------------------------------
+-- CREATE CUSTOMERS TABLE
+----------------------------------------------------
+
+CREATE TABLE customers (
+    customer_id NUMBER PRIMARY KEY,
+    customer_name VARCHAR2(50),
+    city VARCHAR2(30),
+    phone VARCHAR2(15)
+);
+
+----------------------------------------------------
+-- CREATE ACCOUNTS TABLE
+----------------------------------------------------
+
+CREATE TABLE accounts (
+    account_id NUMBER PRIMARY KEY,
+    customer_id NUMBER,
+    account_type VARCHAR2(20),
+    balance NUMBER,
+
+    CONSTRAINT fk_customer
+        FOREIGN KEY (customer_id)
+        REFERENCES customers(customer_id)
+);
+
+----------------------------------------------------
+-- CREATE TRANSACTIONS TABLE
+----------------------------------------------------
+
+CREATE TABLE transactions (
+    transaction_id NUMBER PRIMARY KEY,
+    account_id NUMBER,
+    transaction_type VARCHAR2(20),
+    amount NUMBER,
+    transaction_date DATE,
+
+    CONSTRAINT fk_account
+        FOREIGN KEY (account_id)
+        REFERENCES accounts(account_id)
+);
+
+----------------------------------------------------
+-- INSERT DATA INTO CUSTOMERS
+----------------------------------------------------
+
+INSERT INTO customers VALUES (1, 'Asha', 'Bangalore', '9876543210');
+INSERT INTO customers VALUES (2, 'Ravi', 'Mysore', '9876543222');
+INSERT INTO customers VALUES (3, 'Meena', 'Hubli', '9876543333');
+INSERT INTO customers VALUES (4, 'Kiran', 'Davangere', '9876544444');
+
+----------------------------------------------------
+-- INSERT DATA INTO ACCOUNTS
+----------------------------------------------------
+
+INSERT INTO accounts VALUES (101, 1, 'Savings', 50000);
+INSERT INTO accounts VALUES (102, 2, 'Current', 75000);
+INSERT INTO accounts VALUES (103, 3, 'Savings', 60000);
+INSERT INTO accounts VALUES (104, 4, 'Current', 45000);
+
+----------------------------------------------------
+-- INSERT DATA INTO TRANSACTIONS
+----------------------------------------------------
+
+INSERT INTO transactions VALUES (1001, 101, 'Deposit', 10000, SYSDATE);
+INSERT INTO transactions VALUES (1002, 102, 'Withdrawal', 5000, SYSDATE);
+INSERT INTO transactions VALUES (1003, 103, 'Deposit', 15000, SYSDATE);
+INSERT INTO transactions VALUES (1004, 104, 'Withdrawal', 3000, SYSDATE);
+
+----------------------------------------------------
+-- DISPLAY ALL CUSTOMERS
+----------------------------------------------------
+
+SELECT * FROM customers;
+
+----------------------------------------------------
+-- DISPLAY ALL ACCOUNTS
+----------------------------------------------------
+
+SELECT * FROM accounts;
+
+----------------------------------------------------
+-- DISPLAY ALL TRANSACTIONS
+----------------------------------------------------
+
+SELECT * FROM transactions;
+
+----------------------------------------------------
+-- SHOW CUSTOMER NAME, ACCOUNT TYPE, BALANCE
+----------------------------------------------------
+
+SELECT
+    c.customer_name,
+    a.account_type,
+    a.balance
+FROM customers c
+JOIN accounts a
+ON c.customer_id = a.customer_id;
+
+----------------------------------------------------
+-- SHOW TRANSACTION DETAILS
+----------------------------------------------------
+
+SELECT
+    c.customer_name,
+    t.transaction_type,
+    t.amount,
+    t.transaction_date
+FROM customers c
+JOIN accounts a
+ON c.customer_id = a.customer_id
+JOIN transactions t
+ON a.account_id = t.account_id;
+
+----------------------------------------------------
+-- FIND TOTAL BALANCE IN BANK
+----------------------------------------------------
+
+SELECT
+    SUM(balance) AS total_bank_balance
+FROM accounts;
+
+----------------------------------------------------
+-- FIND CUSTOMER WITH HIGHEST BALANCE
+----------------------------------------------------
+
+SELECT
+    c.customer_name,
+    a.balance
+FROM customers c
+JOIN accounts a
+ON c.customer_id = a.customer_id
+WHERE a.balance = (
+    SELECT MAX(balance)
+    FROM accounts
+);
+
+----------------------------------------------------
+-- UPDATE ACCOUNT BALANCE
+----------------------------------------------------
+
+UPDATE accounts
+SET balance = 80000
+WHERE account_id = 102;
+
+----------------------------------------------------
+-- DELETE TRANSACTION RECORD
+----------------------------------------------------
+
+DELETE FROM transactions
+WHERE transaction_id = 1004;
+
+----------------------------------------------------
+-- CREATE VIEW
+----------------------------------------------------
+
+CREATE VIEW bank_report AS
+SELECT
+    c.customer_name,
+    a.account_type,
+    t.transaction_type,
+    t.amount
+FROM customers c
+JOIN accounts a
+ON c.customer_id = a.customer_id
+JOIN transactions t
+ON a.account_id = t.account_id;
+
+----------------------------------------------------
+-- DISPLAY VIEW
+----------------------------------------------------
+
+SELECT * FROM bank_report;
+
+----------------------------------------------------
+-- COMMIT CHANGES
+----------------------------------------------------
+
+COMMIT;
